@@ -1,6 +1,6 @@
 import "./App.css";
 import Button from "./components/Button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Icon from "./components/Icon";
 import iconDelete from "./assets/eliminar.png";
 import tarea from "./assets/tarea.png";
@@ -16,6 +16,21 @@ function App() {
   const [success, setSuccess] = useState<string>("");
   const [failure, setFailure] = useState<string>("");
   const [lista, setLista] = useState<Tarea[]>([]);
+  const [loaded, setLoaded] = useState<boolean>(false);
+
+  useEffect (() => {
+    const tareas = localStorage.getItem("tareas");
+    if (tareas) {
+      setLista(JSON.parse(tareas));
+    }
+    setLoaded(true);
+  }, []);
+
+  useEffect (() => {
+    if (loaded) {
+      localStorage.setItem("tareas", JSON.stringify(lista));
+    }
+  }, [lista, loaded]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
@@ -99,7 +114,7 @@ function App() {
         <div>
           <ul>
             {lista.map((item, index) => (
-              <div className=" w-lg bg-gray-200 rounded-lg p-3 pb-1 mt-3 mr-25 mb-2 flex justify-between">
+              <div key={index} className=" w-lg bg-gray-200 rounded-lg p-3 pb-1 mt-3 mr-25 mb-2 flex justify-between">
                 <li
                   onClick={() => completado(index)}
                   className={`${
