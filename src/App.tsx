@@ -18,7 +18,7 @@ function App() {
   const [lista, setLista] = useState<Tarea[]>([]);
   const [loaded, setLoaded] = useState<boolean>(false);
 
-  useEffect (() => {
+  useEffect(() => {
     const tareas = localStorage.getItem("tareas");
     if (tareas) {
       setLista(JSON.parse(tareas));
@@ -26,7 +26,7 @@ function App() {
     setLoaded(true);
   }, []);
 
-  useEffect (() => {
+  useEffect(() => {
     if (loaded) {
       localStorage.setItem("tareas", JSON.stringify(lista));
     }
@@ -79,68 +79,75 @@ function App() {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-center bg-amber-50 p-5 ml-50 rounded-2xl w-3xl">
-        <h1 className="font-semibold  text-5xl text-black mt-5 flex gap-3">
-          ToDo List{" "}
-          <span>
-            <Icon src={tarea} width={50} height={50} />
-          </span>
-        </h1>
-        <div>
-          <input
-            value={inputValue}
-            onChange={handleChange}
-            className="bg-gray-200 rounded-4xl p-3 mt-20 w-lg mr-5"
-            type="text"
-            placeholder="Añade algo nuevo..."
-          />
-          <Button
-            onClick={agregar}
-            className="bg-green-400 p-3 border-green-600 border-2 rounded-full hover: cursor-pointer active:bg-green-300 font-bold"
-          >
-            Añadir
-          </Button>
-          <Button
-            onClick={limpiar}
-            className="bg-amber-600 ml-2 p-3 border-amber-700 border-2 rounded-full hover: cursor-pointer active:bg-amber-500 font-bold"
-          >
-            Limpiar
-          </Button>
-        </div>
-        <div className="mt-5 mb-2 mr-95">
-          <p className="text-green-600">{success && success}</p>
-          <p className="text-red-500">{failure && failure}</p>
-        </div>
-        <div>
-          <ul>
-            {lista.map((item, index) => (
-              <div key={index} className=" w-lg bg-gray-200 rounded-lg p-3 pb-1 mt-3 mr-25 mb-2 flex justify-between">
-                <li
-                  onClick={() => completado(index)}
-                  className={`${
-                    item.completado ? "line-through" : ""
-                  } cursor-crosshair `}
+      <div className="h-screen flex items-center justify-center px-4">
+        <div className="flex flex-col items-center justify-center bg-amber-50 p-5 mx-auto rounded-2xl w-full max-w-4xl">
+          <h1 className="font-semibold text-3xl sm:text-5xl text-black flex gap-3 items-center text-center">
+            ToDo List
+            <span>
+              <Icon src={tarea} width={40} height={40} />
+            </span>
+          </h1>
+
+          <div className="flex flex-col sm:flex-row items-center mt-10 gap-3 w-full max-w-md">
+            <input
+              value={inputValue}
+              onChange={handleChange}
+              className="bg-gray-200 rounded-3xl p-3 w-full"
+              type="text"
+              placeholder="Añade algo nuevo..."
+            />
+            <Button
+              onClick={agregar}
+              className="bg-green-400 p-3 border-green-600 border-2 rounded-full hover:cursor-pointer active:bg-green-300 font-bold w-full sm:w-auto"
+            >
+              Añadir
+            </Button>
+            <Button
+              onClick={limpiar}
+              className="bg-amber-600 p-3 border-amber-700 border-2 rounded-full hover:cursor-pointer active:bg-amber-500 font-bold w-full sm:w-auto"
+            >
+              Limpiar
+            </Button>
+          </div>
+
+          <div className="mt-5 mb-2 w-full max-w-md text-center">
+            <p className="text-green-600">{success && success}</p>
+            <p className="text-red-500">{failure && failure}</p>
+          </div>
+
+          <div className="w-full max-w-md">
+            <ul>
+              {lista.map((item, index) => (
+                <div
                   key={index}
+                  className="bg-gray-200 rounded-lg p-3 mt-3 flex justify-between items-center"
                 >
-                  {item.texto}
-                </li>
-                <div className="flex gap-8">
-                  <Button
-                    className="cursor-pointer"
-                    onClick={() => modificar(index)}
+                  <li
+                    onClick={() => completado(index)}
+                    className={`${
+                      item.completado ? "line-through" : ""
+                    } cursor-crosshair break-words max-w-[60%]`}
                   >
-                    <Icon src={iconModify} width={40} height={40} />
-                  </Button>
-                  <Button
-                    className="cursor-pointer"
-                    onClick={() => eliminar(item.texto)}
-                  >
-                    <Icon src={iconDelete} width={40} height={40} />
-                  </Button>
+                    {item.texto}
+                  </li>
+                  <div className="flex gap-4">
+                    <Button
+                      className="cursor-pointer"
+                      onClick={() => modificar(index)}
+                    >
+                      <Icon src={iconModify} width={30} height={30} />
+                    </Button>
+                    <Button
+                      className="cursor-pointer"
+                      onClick={() => eliminar(item.texto)}
+                    >
+                      <Icon src={iconDelete} width={30} height={30} />
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </ul>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </>
