@@ -1,5 +1,7 @@
 # Bienvenido a TO-DONOOB
 
+Aplicación para organizar y priorizar las actividades del usuario.
+
 ## Autor del proyecto
 
 Carlos Chacón Atienza
